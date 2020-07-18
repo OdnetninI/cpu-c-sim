@@ -5,6 +5,7 @@ AC_CONFIG_SRCDIR([src/main.c])
 AC_CONFIG_AUX_DIR(build-aux)
 AM_INIT_AUTOMAKE([foreign subdir-objects])
 AC_CONFIG_MACRO_DIRS([m4])
+AC_SUBST([AM_CFLAGS], ["-Wno-incompatible-pointer-types -std=c89 -fms-extensions"])
 
 # Checks for programs.
 AC_PROG_CC
@@ -27,7 +28,5 @@ AC_TYPE_INT8_T
 
 # Checks for library functions.
 
-AC_CONFIG_FILES([Makefile
-                 src/Makefile
-                 src/cpu/Makefile])
+AC_CONFIG_FILES([Makefile])
 AC_OUTPUT

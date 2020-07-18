@@ -1,5 +1,5 @@
 /*
-cpu.h - Base CPU class
+functional.h - Functional CPU Model
 Copyright (C) 2020 OdnetninI
 
 This program is free software; you can redistribute it and/or
@@ -15,27 +15,29 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program; If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef __CPU_H__
-#define __CPU_H__
+#ifndef __FUNCTIONAL_H__
+#define __FUNCTIONAL_H__
 
 #pragma once
 
-#include "../common.h"
+#include "../../common.h"
+#include "../cpu.h"
 
-/* CPU Class Attributes */
-struct CPU_Vtbl; /* Forward declaration */
-typedef struct __cpu {
-  struct CPU_Vtbl const *vptr; /* Virtual Function Table */
+/* FunctionalCPU Class Attributes */
+struct FunctionalCPU_Vtbl; /* Forward declaration */
+typedef struct __func_cpu {
+  struct FunctionalCPU_Vtbl const *vptr; /* Virtual Function Table */
+  struct CPU_Vtbl const *super; /* Virtual Function Table */
   
-} CPU;
+} FunctionalCPU;
 
-/* CPU Class Virtual Function Table */
-typedef struct CPU_Vtbl {
-  void (*tick)(CPU const * const this);
-} _CPU_Vtbl;
+/* FunctionalCPU Class Virtual Function Table */
+typedef struct FunctionalCPU_Vtbl {
+  _CPU_Vtbl;
+} _FunctionalCPU_Vtbl;
 
 /* Constructors */
-void CPU__ctor(CPU * const this);
-void CPU__dtor(CPU * const this);
+void FunctionalCPU__ctor(FunctionalCPU * const this);
+void FunctionalCPU__dtor(FunctionalCPU * const this);
 
 #endif /* __CPU_H__ */

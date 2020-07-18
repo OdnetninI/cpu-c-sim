@@ -1,5 +1,5 @@
 /*
-cpu.c - Base CPU class
+functional.c - Functional CPU Model
 Copyright (C) 2020 OdnetninI
 
 This program is free software; you can redistribute it and/or
@@ -15,23 +15,27 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program; If not, see <http://www.gnu.org/licenses/>.
  */
-#include "../common.h"
-#include "cpu.h"
+#include "../../common.h"
+#include "../cpu.h"
+#include "functional.h"
 
-void CPU__tick (CPU const * const this) {
-  printf("CPU ticked\n");
+void FunctionalCPU__tick (FunctionalCPU const * const this) {
+  this->super->tick(this);
+  printf("Functional CPU ticked\n");
 }
 
-static const struct CPU_Vtbl CPU_Vtbl =
+static const struct FunctionalCPU_Vtbl FunctionalCPU_Vtbl =
 {
- .tick = CPU__tick,
+ .tick = FunctionalCPU__tick,
  
 };
 
-void CPU__ctor(CPU * const this) {
-  this->vptr = &CPU_Vtbl;
+void FunctionalCPU__ctor(FunctionalCPU * const this) {
+  CPU__ctor(this);
+  this->super = this->vptr;
+  this->vptr = &FunctionalCPU_Vtbl;
 }
 
-void CPU__dtor(CPU * const this) {
-  
+void FunctionalCPU__dtor(FunctionalCPU * const this) {
+  CPU__dtor(this);
 }

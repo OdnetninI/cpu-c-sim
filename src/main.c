@@ -1,15 +1,15 @@
 #include <stdio.h>
-#include "cpu/cpu.h"
+#include "cpu/functional/functional.h"
 
 int main (int argc, char* argv[], char* envp[]) {
   printf("Hello World!\n");
 
-  CPU cpu;
-  CPU__ctor(&cpu);
+  FunctionalCPU cpu;
+  FunctionalCPU__ctor(&cpu);
 
-  cpu.vptr->test(&cpu);
+  cpu.vptr->tick(&cpu);
 
-  CPU__dtor(&cpu);
+  FunctionalCPU__dtor(&cpu);
   
   return 0;
 }
