@@ -1,5 +1,5 @@
 /*
-common.h - Common C includes for all files
+request.c - Request class to memory hierarchy
 Copyright (C) 2020 OdnetninI
 
 This program is free software; you can redistribute it and/or
@@ -15,30 +15,28 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program; If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef __COMMON_H__
-#define __COMMON_H__
+#include "../common.h"
+#include "request.h"
 
-#pragma once
+void Request__setAddress(Request * const this, uint64_t address) {
+  this->address = address;
+}
 
-/* Common C Includes */
+uint64_t Request__getAddress(Request const * const this) {
+  return this->address;
+}
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-#include <stdint.h>
+static const struct Request_Vtbl Request_Vtbl =
+{
+ .setAddress = Request__setAddress,
+ .getAddress = Request__getAddress,
+};
 
-/* Class defines */
-#define new(x, ...) ({x* tmp = (x*)malloc(sizeof(x)); x##__ctor(tmp , ##__VA_ARGS__); tmp;})
-#define delete(x) {free(x);};
+void Request__ctor(Request * const this) {
+  this->vptr = &Request_Vtbl;
+  this->address = 0x00;
+}
 
-/* Common Defines */
-#define KB(x) ((x) << 10)
-#define MB(x) ((x) << 20)
-#define GB(x) ((x) << 30)
-#define TB(x) ((x) << 40)
-
-#define nullptr ((void*)0x00)
-#define null (0x00)
-
-#endif /* __COMMON_H__ */
+void Request__dtor(Request * const this) {
+  
+}

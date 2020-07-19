@@ -21,19 +21,25 @@ along with this program; If not, see <http://www.gnu.org/licenses/>.
 #pragma once
 
 #include "../../common.h"
+#include "../../base/queue.h"
 #include "../cpu.h"
 
 /* FunctionalCPU Class Attributes */
 struct FunctionalCPU_Vtbl; /* Forward declaration */
 typedef struct __func_cpu {
   struct FunctionalCPU_Vtbl const *vptr; /* Virtual Function Table */
-  struct CPU_Vtbl const *super; /* Virtual Function Table */
+  struct CPU_Vtbl const *super; /* Parent Virtual Function Table */
+
+  Queue* toMemory;
+  Queue* fromMemory;
   
+  uint64_t pc; /* Program Counter */
 } FunctionalCPU;
 
 /* FunctionalCPU Class Virtual Function Table */
 typedef struct FunctionalCPU_Vtbl {
   _CPU_Vtbl;
+  void (*setMemoryQueues)(FunctionalCPU* const this, Queue* const toMemory, Queue* const fromMemory);
 } _FunctionalCPU_Vtbl;
 
 /* Constructors */

@@ -1,5 +1,5 @@
 /*
-common.h - Common C includes for all files
+request.h - Request class to memory hierarchy
 Copyright (C) 2020 OdnetninI
 
 This program is free software; you can redistribute it and/or
@@ -15,30 +15,29 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program; If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef __COMMON_H__
-#define __COMMON_H__
+#ifndef __Request_H__
+#define __Request_H__
 
 #pragma once
 
-/* Common C Includes */
+#include "../common.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-#include <stdint.h>
+/* Request Class Attributes */
+struct Request_Vtbl; /* Forward declaration */
+typedef struct __request {
+  struct Request_Vtbl const *vptr; /* Virtual Function Table */
 
-/* Class defines */
-#define new(x, ...) ({x* tmp = (x*)malloc(sizeof(x)); x##__ctor(tmp , ##__VA_ARGS__); tmp;})
-#define delete(x) {free(x);};
+  uint64_t address;
+} Request;
 
-/* Common Defines */
-#define KB(x) ((x) << 10)
-#define MB(x) ((x) << 20)
-#define GB(x) ((x) << 30)
-#define TB(x) ((x) << 40)
+/* Request Class Virtual Function Table */
+typedef struct Request_Vtbl {
+  void (*setAddress)(Request * const this, uint64_t address);
+  uint64_t (*getAddress)(Request const * const this);
+} _Request_Vtbl;
 
-#define nullptr ((void*)0x00)
-#define null (0x00)
+/* Constructors */
+void Request__ctor(Request * const this);
+void Request__dtor(Request * const this);
 
-#endif /* __COMMON_H__ */
+#endif /* __Request_H__ */

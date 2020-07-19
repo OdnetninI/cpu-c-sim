@@ -18,22 +18,36 @@ along with this program; If not, see <http://www.gnu.org/licenses/>.
 #include "../../common.h"
 #include "../cpu.h"
 #include "functional.h"
+#include "../../mem/request.h"
 
 void FunctionalCPU__tick (FunctionalCPU const * const this) {
   this->super->tick(this);
   printf("Functional CPU ticked\n");
+  Request* req = new(Request);
+  req->vptr->setAddress(req, this->pc);
+  this->toMemory->vptr->push(this->toMemory, req);
+  printf("Sent pc %x request to mem\n", this->pc);
+}
+
+void FunctionalCPU__setMemoryQueues(FunctionalCPU* const this, Queue* const toMemory, Queue* const fromMemory) {
+  this->toMemory = toMemory;
+  this->fromMemory = fromMemory;
 }
 
 static const struct FunctionalCPU_Vtbl FunctionalCPU_Vtbl =
 {
  .tick = FunctionalCPU__tick,
- 
+ .setMemoryQueues = FunctionalCPU__setMemoryQueues,
 };
 
 void FunctionalCPU__ctor(FunctionalCPU * const this) {
   CPU__ctor(this);
   this->super = this->vptr;
   this->vptr = &FunctionalCPU_Vtbl;
+
+  this->pc = 0;
+  this->toMemory = nullptr;
+  this->fromMemory = nullptr;
 }
 
 void FunctionalCPU__dtor(FunctionalCPU * const this) {

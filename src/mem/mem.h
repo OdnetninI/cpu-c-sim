@@ -1,5 +1,5 @@
 /*
-common.h - Common C includes for all files
+mem.h - Base Memory class
 Copyright (C) 2020 OdnetninI
 
 This program is free software; you can redistribute it and/or
@@ -15,30 +15,27 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program; If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef __COMMON_H__
-#define __COMMON_H__
+#ifndef __MEM_H__
+#define __MEM_H__
 
 #pragma once
 
-/* Common C Includes */
+#include "../common.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-#include <stdint.h>
+/* Mem Class Attributes */
+struct Mem_Vtbl; /* Forward declaration */
+typedef struct __mem {
+  struct Mem_Vtbl const *vptr; /* Virtual Function Table */
+  
+} Mem;
 
-/* Class defines */
-#define new(x, ...) ({x* tmp = (x*)malloc(sizeof(x)); x##__ctor(tmp , ##__VA_ARGS__); tmp;})
-#define delete(x) {free(x);};
+/* Mem Class Virtual Function Table */
+typedef struct Mem_Vtbl {
+  void (*tick)(Mem const * const this);
+} _Mem_Vtbl;
 
-/* Common Defines */
-#define KB(x) ((x) << 10)
-#define MB(x) ((x) << 20)
-#define GB(x) ((x) << 30)
-#define TB(x) ((x) << 40)
+/* Constructors */
+void Mem__ctor(Mem * const this);
+void Mem__dtor(Mem * const this);
 
-#define nullptr ((void*)0x00)
-#define null (0x00)
-
-#endif /* __COMMON_H__ */
+#endif /* __MEM_H__ */
