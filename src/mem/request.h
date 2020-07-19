@@ -25,6 +25,9 @@ along with this program; If not, see <http://www.gnu.org/licenses/>.
 /* Attributes of the class */
 typedef struct Request_Data {
   uint64_t address;
+  
+  uint64_t dataSize;
+  uint8_t* data;
 } _Request_Data;
 
 /* Request Class */
@@ -39,6 +42,11 @@ typedef struct __request {
 typedef struct Request_Vtbl {
   void (*setAddress)(Request * const this, uint64_t address);
   uint64_t (*getAddress)(Request const * const this);
+
+  void (*setDataSize)(Request * const this, uint64_t dataSize);
+  uint64_t (*getDataSize)(Request * const this);
+  void (*setData)(Request * const this, uint8_t* data);
+  uint8_t* (*getData)(Request * const this);
 } _Request_Vtbl;
 
 /* Constructors */

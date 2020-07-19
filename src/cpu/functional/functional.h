@@ -32,6 +32,9 @@ typedef struct FunctionalCPU_Data {
   Queue* fromMemory;
 
   uint64_t pc; /* Program Counter */
+
+  uint64_t fetchState;
+  uint64_t fetchBytes;
   
 } _FunctionalCPU_Data;
 

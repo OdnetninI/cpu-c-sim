@@ -28,8 +28,12 @@ void SimpleMem__tick (SimpleMem const * const this) {
   if (req != nullptr) {
     uint64_t addr = req->vptr->getAddress(req);
     printf("Request for address %x reached memory\n", addr);
-    Request__dtor(req);
-    delete(req);
+
+    uint8_t* data = malloc(req->vptr->getDataSize(req) * sizeof(uint8_t));
+    memcpy(data, this->memory + addr, req->vptr->getDataSize(req));
+    req->vptr->setData(req, data);
+
+    this->toCPU->vptr->push(this->toCPU, req);
   }
 }
 

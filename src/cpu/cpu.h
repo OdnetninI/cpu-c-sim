@@ -37,7 +37,7 @@ typedef struct __cpu {
 
 /* CPU Class Virtual Function Table */
 typedef struct CPU_Vtbl {
-  void (*tick)(CPU const * const this);
+  void (*tick)(CPU * const this);
 } _CPU_Vtbl;
 
 /* Constructors */

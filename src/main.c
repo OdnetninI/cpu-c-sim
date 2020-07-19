@@ -16,7 +16,7 @@ int main (int argc, char* argv[], char* envp[]) {
   mem->vptr->setCPUQueues(mem, cpuToMem, memToCpu);
   
   int i = 0;
-  for (i = 0; i < 10; ++i) {
+  for (i = 0; i < 4; ++i) {
     cpu->vptr->tick(cpu);
     if (i%2 == 0) mem->vptr->tick(mem);
   }

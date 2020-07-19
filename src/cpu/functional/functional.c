@@ -20,13 +20,61 @@ along with this program; If not, see <http://www.gnu.org/licenses/>.
 #include "functional.h"
 #include "../../mem/request.h"
 
-void FunctionalCPU__tick (FunctionalCPU const * const this) {
+enum FetchState {
+		 RequestToMemory = 0,
+		 WaitingToMemory,
+		 SendToDecode
+};
+
+void FunctionalCPU__fetch(FunctionalCPU * const this) {
+  switch(this->fetchState) {
+  case RequestToMemory:
+    {
+      Request* req = new(Request);
+      req->vptr->setDataSize(req, 4);
+      req->vptr->setAddress(req, this->pc);
+      this->toMemory->vptr->push(this->toMemory, req);
+      printf("Sent pc %x request to mem\n", this->pc);
+    
+      this->fetchState = WaitingToMemory;
+      break;
+    }
+  case WaitingToMemory:
+    {
+      Request* req = this->fromMemory->vptr->pop(this->fromMemory);
+      if (req != nullptr) {
+	uint64_t addr = req->vptr->getAddress(req);
+	printf("Address %x answered from memory\n", addr);
+
+	int i = 0;
+	for (i = 0; i < req->vptr->getDataSize(req); ++i)
+	  printf("0x%02x ", req->vptr->getData(req)[i]);
+	printf("\n");
+
+	free(req->vptr->getData(req));
+	Request__dtor(req);
+	delete(req);
+
+	this->fetchState = SendToDecode;
+      }
+      break;
+    }
+  case SendToDecode:
+    {
+    break;
+    }
+  default:
+    {
+      printf("Invalid fetch state\n");
+      break;
+    }
+  }
+}
+
+void FunctionalCPU__tick (FunctionalCPU * const this) {
   this->super->tick(this);
   printf("Functional CPU ticked\n");
-  Request* req = new(Request);
-  req->vptr->setAddress(req, this->pc);
-  this->toMemory->vptr->push(this->toMemory, req);
-  printf("Sent pc %x request to mem\n", this->pc);
+  FunctionalCPU__fetch(this);
 }
 
 void FunctionalCPU__setMemoryQueues(FunctionalCPU* const this, Queue* const toMemory, Queue* const fromMemory) {
@@ -48,6 +96,8 @@ void FunctionalCPU__ctor(FunctionalCPU * const this) {
   this->pc = 0;
   this->toMemory = nullptr;
   this->fromMemory = nullptr;
+
+  this->fetchState = 0;
 }
 
 void FunctionalCPU__dtor(FunctionalCPU * const this) {

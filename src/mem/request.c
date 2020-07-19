@@ -26,10 +26,31 @@ uint64_t Request__getAddress(Request const * const this) {
   return this->address;
 }
 
+void Request__setDataSize(Request * const this, uint64_t dataSize) {
+  this->dataSize = dataSize;
+}
+
+uint64_t Request__getDataSize(Request * const this) {
+  return this->dataSize;
+}
+
+void Request__setData(Request * const this, uint8_t* data) {
+  this->data = data;
+}
+
+uint8_t* Request__getData(Request * const this) {
+  return this->data;
+}
+
 static const struct Request_Vtbl Request_Vtbl =
 {
  .setAddress = Request__setAddress,
  .getAddress = Request__getAddress,
+ 
+ .setDataSize = Request__setDataSize,
+ .getDataSize = Request__getDataSize,
+ .setData = Request__setData,
+ .getData = Request__getData,
 };
 
 void Request__ctor(Request * const this) {
