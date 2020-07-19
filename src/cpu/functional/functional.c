@@ -82,9 +82,14 @@ void FunctionalCPU__setMemoryQueues(FunctionalCPU* const this, Queue* const toMe
   this->fromMemory = fromMemory;
 }
 
+void FunctionalCPU__setPC(FunctionalCPU * const this, uint64_t const pc) {
+  this->pc = pc;
+}
+
 static const struct FunctionalCPU_Vtbl FunctionalCPU_Vtbl =
 {
  .tick = FunctionalCPU__tick,
+ .setPC = FunctionalCPU__setPC,
  .setMemoryQueues = FunctionalCPU__setMemoryQueues,
 };
 

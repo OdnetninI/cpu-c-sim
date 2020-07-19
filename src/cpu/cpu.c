@@ -25,7 +25,7 @@ void CPU__tick (CPU const * const this) {
 static const struct CPU_Vtbl CPU_Vtbl =
 {
  .tick = CPU__tick,
- 
+ .setPC = nullptr,
 };
 
 void CPU__ctor(CPU * const this) {

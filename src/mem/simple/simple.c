@@ -37,6 +37,10 @@ void SimpleMem__tick (SimpleMem const * const this) {
   }
 }
 
+void SimpleMem__initializeMemory(SimpleMem const * const this, uint64_t const address, uint8_t const * const source, uint64_t const size) {
+  memcpy(this->memory + address, source, size);
+}
+
 void SimpleMem__setCPUQueues(SimpleMem* const this, Queue* const fromCPU, Queue* const toCPU) {
   this->fromCPU = fromCPU;
   this->toCPU = toCPU;
@@ -45,6 +49,7 @@ void SimpleMem__setCPUQueues(SimpleMem* const this, Queue* const fromCPU, Queue*
 static const struct SimpleMem_Vtbl SimpleMem_Vtbl =
 {
  .tick = SimpleMem__tick,
+ .initializeMemory = SimpleMem__initializeMemory,
  .setCPUQueues = SimpleMem__setCPUQueues,
 };
 
@@ -53,7 +58,7 @@ void SimpleMem__ctor(SimpleMem * const this) {
   this->super = this->vptr;
   this->vptr = &SimpleMem_Vtbl;
 
-  this->memory_size = MB(16);
+  this->memory_size = MB(128);
   this->memory = malloc(this->memory_size * sizeof(*(this->memory)));
 }
 

@@ -38,6 +38,7 @@ typedef struct __mem {
 /* Mem Class Virtual Function Table */
 typedef struct Mem_Vtbl {
   void (*tick)(Mem const * const this);
+  void (*initializeMemory)(Mem const * const this, uint64_t const address, uint8_t const * const source, uint64_t const size);
 } _Mem_Vtbl;
 
 /* Constructors */

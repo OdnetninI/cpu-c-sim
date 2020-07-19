@@ -25,7 +25,7 @@ void Mem__tick (Mem const * const this) {
 static const struct Mem_Vtbl Mem_Vtbl =
 {
  .tick = Mem__tick,
- 
+ .initializeMemory = nullptr,
 };
 
 void Mem__ctor(Mem * const this) {
