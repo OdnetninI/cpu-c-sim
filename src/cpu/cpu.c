@@ -30,6 +30,7 @@ static const struct CPU_Vtbl CPU_Vtbl =
 
 void CPU__ctor(CPU * const this) {
   this->vptr = &CPU_Vtbl;
+  this->super = nullptr;
 }
 
 void CPU__dtor(CPU * const this) {

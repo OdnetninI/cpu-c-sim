@@ -24,16 +24,23 @@ along with this program; If not, see <http://www.gnu.org/licenses/>.
 #include "../../base/queue.h"
 #include "../cpu.h"
 
-/* FunctionalCPU Class Attributes */
+/* Attributes of the class */
+typedef struct FunctionalCPU_Data {
+  _CPU_Data; /* Inherited attributes from parents */
+  
+  Queue* toMemory;
+  Queue* fromMemory;
+
+  uint64_t pc; /* Program Counter */
+  
+} _FunctionalCPU_Data;
+
+/* FunctionalCPU Class */
 struct FunctionalCPU_Vtbl; /* Forward declaration */
 typedef struct __func_cpu {
   struct FunctionalCPU_Vtbl const *vptr; /* Virtual Function Table */
   struct CPU_Vtbl const *super; /* Parent Virtual Function Table */
-
-  Queue* toMemory;
-  Queue* fromMemory;
-  
-  uint64_t pc; /* Program Counter */
+  _FunctionalCPU_Data; /* Attributes of the class (Anonymous struct) */
 } FunctionalCPU;
 
 /* FunctionalCPU Class Virtual Function Table */

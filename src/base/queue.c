@@ -45,6 +45,7 @@ static const struct Queue_Vtbl Queue_Vtbl =
 
 void Queue__ctor(Queue * const this, uint64_t capacity) {
   this->vptr = &Queue_Vtbl;
+  this->super = nullptr;
   
   this->capacity = capacity;
   this->usage = 0;

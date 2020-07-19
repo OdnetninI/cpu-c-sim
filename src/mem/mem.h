@@ -22,11 +22,17 @@ along with this program; If not, see <http://www.gnu.org/licenses/>.
 
 #include "../common.h"
 
-/* Mem Class Attributes */
+/* Attributes of the class */
+typedef struct Mem_Data {
+  
+} _Mem_Data;
+
+/* Mem Class */
 struct Mem_Vtbl; /* Forward declaration */
 typedef struct __mem {
   struct Mem_Vtbl const *vptr; /* Virtual Function Table */
-  
+  void const * super; /* Parent Virtual Function Table */
+  _Mem_Data; /* Attributes of the class (Anonymous struct) */
 } Mem;
 
 /* Mem Class Virtual Function Table */

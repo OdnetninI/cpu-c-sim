@@ -22,11 +22,17 @@ along with this program; If not, see <http://www.gnu.org/licenses/>.
 
 #include "../common.h"
 
-/* CPU Class Attributes */
-struct CPU_Vtbl; /* Forward declaration */
+/* Attributes of the class */
+typedef struct CPU_Data {
+  
+} _CPU_Data;
+
+/* CPU Class */
+struct CPU_Vtbl;
 typedef struct __cpu {
   struct CPU_Vtbl const *vptr; /* Virtual Function Table */
-  
+  void const * super; /* Parent Virtual Function Table */
+  _CPU_Data; /* Attributes of the class (Anonymous struct) */
 } CPU;
 
 /* CPU Class Virtual Function Table */

@@ -22,12 +22,17 @@ along with this program; If not, see <http://www.gnu.org/licenses/>.
 
 #include "../common.h"
 
-/* Request Class Attributes */
+/* Attributes of the class */
+typedef struct Request_Data {
+  uint64_t address;
+} _Request_Data;
+
+/* Request Class */
 struct Request_Vtbl; /* Forward declaration */
 typedef struct __request {
   struct Request_Vtbl const *vptr; /* Virtual Function Table */
-
-  uint64_t address;
+  void const *super; /* Parent Virtual Function Table */
+  _Request_Data; /* Attributes of the class (Anonymous struct) */
 } Request;
 
 /* Request Class Virtual Function Table */

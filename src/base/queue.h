@@ -22,16 +22,21 @@ along with this program; If not, see <http://www.gnu.org/licenses/>.
 
 #include "../common.h"
 
-/* Queue Class Attributes */
-struct Queue_Vtbl; /* Forward declaration */
-typedef struct __queue {
-  struct Queue_Vtbl const *vptr; /* Virtual Function Table */
-
+/* Attributes of the class */
+typedef struct Queue_Data {
   uint64_t capacity;
   void** storage;
   uint64_t head;
   uint64_t tail;
   uint64_t usage;
+} _Queue_Data;
+
+/* Queue Class */
+struct Queue_Vtbl; /* Forward declaration */
+typedef struct __queue {
+  struct Queue_Vtbl const *vptr; /* Virtual Function Table */
+  void const * super; /* Parent Virtual Function Table */
+  _Queue_Data; /* Attributes of the class (Anonymous struct) */
 } Queue;
 
 /* Queue Class Virtual Function Table */

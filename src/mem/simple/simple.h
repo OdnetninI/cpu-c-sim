@@ -24,18 +24,23 @@ along with this program; If not, see <http://www.gnu.org/licenses/>.
 #include "../../base/queue.h"
 #include "../mem.h"
 
-
-/* Mem Class Attributes */
-struct SimpleMem_Vtbl; /* Forward declaration */
-typedef struct __simplemem {
-  struct SimpleMem_Vtbl const *vptr; /* Virtual Function Table */
-  struct Mem_Vtbl const *super; /* Parent Virtual Function Table */
-
+/* Attributes of the class */
+typedef struct SimpleMem_Data {
+  _Mem_Data; /* Inherited attributes from parents */
+  
   Queue* fromCPU;
   Queue* toCPU;
 
   uint64_t memory_size; /* Size of the current memory */
   uint8_t* memory; /* Allocable memory */
+} _SimpleMem_Data;
+
+/* Mem Class */
+struct SimpleMem_Vtbl; /* Forward declaration */
+typedef struct __simplemem {
+  struct SimpleMem_Vtbl const *vptr; /* Virtual Function Table */
+  struct Mem_Vtbl const *super; /* Parent Virtual Function Table */
+  _SimpleMem_Data; /* Attributes of the class (Anonymous struct) */
 } SimpleMem;
 
 /* SimpleMem Class Virtual Function Table */

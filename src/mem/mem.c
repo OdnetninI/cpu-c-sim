@@ -30,6 +30,7 @@ static const struct Mem_Vtbl Mem_Vtbl =
 
 void Mem__ctor(Mem * const this) {
   this->vptr = &Mem_Vtbl;
+  this->super = nullptr;
 }
 
 void Mem__dtor(Mem * const this) {
