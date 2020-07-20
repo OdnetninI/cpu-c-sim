@@ -43,6 +43,10 @@ typedef struct __queue {
 typedef struct Queue_Vtbl {
   uint8_t (*push)(Queue * const this, void* object);
   void* (*pop)(Queue * const this);
+  void* (*front)(Queue * const * this);
+  void* (*back)(Queue * const * this);
+  uint8_t (*isFull)(Queue * const * this);
+  uint8_t (*isEmpty)(Queue * const * this);
 } _Queue_Vtbl;
 
 /* Constructors */

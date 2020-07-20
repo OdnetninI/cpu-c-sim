@@ -19,7 +19,7 @@ along with this program; If not, see <http://www.gnu.org/licenses/>.
 #include "mem.h"
 
 void Mem__tick (Mem const * const this) {
-  printf("Mem ticked\n");
+  
 }
 
 static const struct Mem_Vtbl Mem_Vtbl =

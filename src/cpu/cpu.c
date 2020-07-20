@@ -19,7 +19,7 @@ along with this program; If not, see <http://www.gnu.org/licenses/>.
 #include "cpu.h"
 
 void CPU__tick (CPU const * const this) {
-  printf("CPU ticked\n");
+  
 }
 
 static const struct CPU_Vtbl CPU_Vtbl =

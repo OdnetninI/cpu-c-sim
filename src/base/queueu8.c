@@ -1,5 +1,5 @@
 /*
-queue.c - Queue Data Structure
+queueu8.c - Queue uint8_t Data Structure
 Copyright (C) 2020 OdnetninI
 
 This program is free software; you can redistribute it and/or
@@ -16,10 +16,10 @@ You should have received a copy of the GNU General Public License
 along with this program; If not, see <http://www.gnu.org/licenses/>.
  */
 #include "../common.h"
-#include "queue.h"
+#include "queueu8.h"
 
-uint8_t Queue__push(Queue * const this, void* object) {
-  if (this->usage >= this->capacity) return 0;
+uint8_t QueueU8__push(QueueU8 * const this, uint8_t object) {
+  if (this->usage >= this->capacity) return null;
   
   this->storage[this->tail] = object;
   this->tail = (this->tail + 1) % this->capacity;
@@ -28,8 +28,9 @@ uint8_t Queue__push(Queue * const this, void* object) {
   return 1;
 }
 
-void* Queue__pop(Queue * const this) {
-  if (this->head == this->tail) return nullptr;
+uint8_t QueueU8__pop(QueueU8 * const this) {
+  if (this->head == this->tail) return null;
+  /* This is not a pointer, be carefull, check that the queue has items */
   
   void* obj = this->storage[this->head];
   this->head = (this->head + 1) % this->capacity;
@@ -37,38 +38,38 @@ void* Queue__pop(Queue * const this) {
   return obj;
 }
 
-void* Queue__front(Queue const * const this) {
+uint8_t QueueU8__front(QueueU8 const * const this) {
   void* obj = this->storage[this->head];
   return obj;
 }
 
-void* Queue__back(Queue const * const this) {
+uint8_t QueueU8__back(QueueU8 const * const this) {
   void* obj = this->storage[(this->head + this->usage - 1) % this->capacity];
   return obj;
 }
 
-uint8_t Queue__isFull(Queue const * const this) {
+uint8_t QueueU8__isFull(QueueU8 const * const this) {
   if (this->usage >= this->capacity) return 1;
   return 0;
 }
 
-uint8_t Queue__isEmpty(Queue const * const this) {
+uint8_t QueueU8__isEmpty(QueueU8 const * const this) {
   if (this->usage == 0) return 1;
   return 0;
 }
 
-static const struct Queue_Vtbl Queue_Vtbl =
+static const struct QueueU8_Vtbl QueueU8_Vtbl =
 {
- .push = Queue__push,
- .pop = Queue__pop,
- .front = Queue__front,
- .back = Queue__back,
- .isFull = Queue__isFull,
- .isEmpty = Queue__isEmpty,
+ .push = QueueU8__push,
+ .pop = QueueU8__pop,
+ .front = QueueU8__front,
+ .back = QueueU8__back,
+ .isFull = QueueU8__isFull,
+ .isEmpty = QueueU8__isEmpty,
 };
 
-void Queue__ctor(Queue * const this, uint64_t capacity) {
-  this->vptr = &Queue_Vtbl;
+void QueueU8__ctor(QueueU8 * const this, uint64_t capacity) {
+  this->vptr = &QueueU8_Vtbl;
   this->super = nullptr;
   
   this->capacity = capacity;
@@ -79,6 +80,6 @@ void Queue__ctor(Queue * const this, uint64_t capacity) {
   this->storage = (void*)malloc(capacity * sizeof(*(this->storage)));
 }
 
-void Queue__dtor(Queue * const this) {
+void QueueU8__dtor(QueueU8 * const this) {
   free(this->storage);
 }

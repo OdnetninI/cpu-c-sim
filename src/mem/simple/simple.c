@@ -23,11 +23,10 @@ along with this program; If not, see <http://www.gnu.org/licenses/>.
 
 void SimpleMem__tick (SimpleMem const * const this) {
   this->super->tick(this);
-  printf("SimpleMem ticked\n");
   Request* req = this->fromCPU->vptr->pop(this->fromCPU);
   if (req != nullptr) {
     uint64_t addr = req->vptr->getAddress(req);
-    printf("Request for address %x reached memory\n", addr);
+    /*printf("Request for address %x reached memory\n", addr);*/
 
     uint8_t* data = malloc(req->vptr->getDataSize(req) * sizeof(uint8_t));
     memcpy(data, this->memory + addr, req->vptr->getDataSize(req));

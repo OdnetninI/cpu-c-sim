@@ -4,6 +4,7 @@ bin_PROGRAMS = cpu-c-sim
 cpu_c_sim_SOURCES = \
 	src/main.c \
 	src/base/queue.c \
+	src/base/queueu8.c \
 	src/cpu/cpu.c \
 	src/cpu/functional/functional.c \
 	src/mem/mem.c \

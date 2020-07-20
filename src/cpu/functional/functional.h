@@ -22,7 +22,25 @@ along with this program; If not, see <http://www.gnu.org/licenses/>.
 
 #include "../../common.h"
 #include "../../base/queue.h"
+#include "../../base/queueu8.h"
 #include "../cpu.h"
+
+typedef struct _instruction {
+  struct {
+    uint8_t opsize : 1;
+    uint8_t address : 1;
+    uint8_t lock : 1;
+    uint8_t rep : 1;
+    uint8_t repme : 1;
+    uint8_t vex2 : 1;
+    uint8_t vex3 : 1;
+    uint8_t res : 1;
+    uint8_t seg;
+    uint8_t rex;
+  } prefix;
+  uint8_t type;
+  uint8_t opcode;
+} X86Inst;
 
 /* Attributes of the class */
 typedef struct FunctionalCPU_Data {
@@ -33,8 +51,15 @@ typedef struct FunctionalCPU_Data {
 
   uint64_t pc; /* Program Counter */
 
+  /* Fetch Data */
   uint64_t fetchState;
   uint64_t fetchBytes;
+  uint8_t currentFetchByte;
+
+  /* Decode Data */
+  uint64_t decodeState;
+  QueueU8* decodeBytes;
+  X86Inst decodedInst;
   
 } _FunctionalCPU_Data;
 
