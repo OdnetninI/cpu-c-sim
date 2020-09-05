@@ -23,7 +23,6 @@ along with this program; If not, see <http://www.gnu.org/licenses/>.
 #include "../../common.h"
 #include "../../base/queue.h"
 #include "../../base/queueu8.h"
-#include "../cpu.h"
 
 typedef struct _instruction {
   struct {
@@ -42,10 +41,7 @@ typedef struct _instruction {
   uint8_t opcode;
 } X86Inst;
 
-/* Attributes of the class */
-typedef struct FunctionalCPU_Data {
-  _CPU_Data; /* Inherited attributes from parents */
-  
+typedef struct _cpu {  
   Queue* toMemory;
   Queue* fromMemory;
 
@@ -61,24 +57,13 @@ typedef struct FunctionalCPU_Data {
   QueueU8* decodeBytes;
   X86Inst decodedInst;
   
-} _FunctionalCPU_Data;
+} CPU;
 
-/* FunctionalCPU Class */
-struct FunctionalCPU_Vtbl; /* Forward declaration */
-typedef struct __func_cpu {
-  struct FunctionalCPU_Vtbl const *vptr; /* Virtual Function Table */
-  struct CPU_Vtbl const *super; /* Parent Virtual Function Table */
-  _FunctionalCPU_Data; /* Attributes of the class (Anonymous struct) */
-} FunctionalCPU;
+void CPU_init(CPU * const cpu);
+void CPU_destroy(CPU * const cpu);
 
-/* FunctionalCPU Class Virtual Function Table */
-typedef struct FunctionalCPU_Vtbl {
-  _CPU_Vtbl;
-  void (*setMemoryQueues)(FunctionalCPU* const this, Queue* const toMemory, Queue* const fromMemory);
-} _FunctionalCPU_Vtbl;
-
-/* Constructors */
-void FunctionalCPU__ctor(FunctionalCPU * const this);
-void FunctionalCPU__dtor(FunctionalCPU * const this);
+void CPU_tick (CPU * const cpu);
+void CPU_setMemoryQueues(CPU * const cpu, Queue* const toMemory, Queue* const fromMemory);
+void CPU_setPC(CPU * const cpu, uint64_t const pc);
 
 #endif /* __CPU_H__ */

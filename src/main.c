@@ -8,21 +8,25 @@
 int main (int argc, char* argv[], char* envp[]) {
   printf("Hello World!\n");
 
-  FunctionalCPU* cpu = new(FunctionalCPU);
-  SimpleMem* mem = new(SimpleMem);
+  CPU* cpu = (CPU*)malloc(sizeof (CPU));
+  Mem* mem = (Mem*)malloc(sizeof (Mem));
+  CPU_init(cpu);
+  Mem_init(mem);
 
-  Queue* cpuToMem = new(Queue, 32);
-  Queue* memToCpu = new(Queue, 32);
+  Queue* cpuToMem = (Queue*)malloc(sizeof (Queue));
+  Queue* memToCpu = (Queue*)malloc(sizeof (Queue));
+  Queue_init(cpuToMem, 32);
+  Queue_init(memToCpu, 32);
 
-  cpu->vptr->setMemoryQueues(cpu, cpuToMem, memToCpu);
-  mem->vptr->setCPUQueues(mem, cpuToMem, memToCpu);
+  CPU_setMemoryQueues(cpu, cpuToMem, memToCpu);
+  Mem_setCPUQueues(mem, cpuToMem, memToCpu);
 
 
   /* Read Linux binary */
   printf("-------------------------\n");
   printf("Loading Kernel ELF Binary\n");
   printf("-------------------------\n");
-  FILE* file = fopen("../vmlinuz-5.7-x86_64", "rb");
+  FILE* file = fopen(argv[1], "rb");
   if (!file) return 1;
 
   Elf64_Ehdr header;
@@ -34,7 +38,7 @@ int main (int argc, char* argv[], char* envp[]) {
   printf("Programs headers size %d\n", header.e_phentsize);
   printf("Programs headers entries %d\n", header.e_phnum);*/
 
-  cpu->vptr->setPC(cpu, header.e_entry);
+  CPU_setPC(cpu, header.e_entry);
 
   fseek(file, header.e_phoff, SEEK_SET);
 
@@ -55,7 +59,7 @@ int main (int argc, char* argv[], char* envp[]) {
     fseek(file, program.p_offset, SEEK_SET);
     uint8_t* data = malloc(program.p_filesz);
     fread(data, 1, program.p_filesz, file);
-    mem->vptr->initializeMemory(mem, program.p_paddr, data, program.p_filesz);
+    Mem_initializeMemory(mem, program.p_paddr, data, program.p_filesz);
     free(data);
   }
 
@@ -64,14 +68,13 @@ int main (int argc, char* argv[], char* envp[]) {
   
   int i = 0;
   for (i = 0; i < 10; ++i) {
-    cpu->vptr->tick(cpu);
-    if (i%2 == 0) mem->vptr->tick(mem);
+    CPU_tick(cpu);
+    if (i%2 == 0) Mem_tick(mem);
   }
 
-  FunctionalCPU__dtor(cpu);
-  SimpleMem__dtor(mem);
-  Queue__dtor(cpuToMem);
-  Queue__dtor(memToCpu);
+  Mem_destroy(mem);
+  Queue_destroy(cpuToMem);
+  Queue_destroy(memToCpu);
   delete(cpu);
   delete(mem);
   delete(cpuToMem);
