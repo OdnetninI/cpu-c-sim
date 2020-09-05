@@ -67,7 +67,7 @@ int main (int argc, char* argv[], char* envp[]) {
   fclose(file);
   
   int i = 0;
-  for (i = 0; i < 10; ++i) {
+  for (i = 0; i < 100; ++i) {
     CPU_tick(cpu);
     if (i%2 == 0) Mem_tick(mem);
   }

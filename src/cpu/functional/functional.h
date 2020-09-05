@@ -35,10 +35,38 @@ typedef struct _instruction {
     uint8_t vex3 : 1;
     uint8_t res : 1;
     uint8_t seg;
-    uint8_t rex;
+    union {
+      uint8_t rex;
+      struct {
+	uint8_t B : 1;
+	uint8_t X : 1;
+	uint8_t R : 1;
+	uint8_t W : 1;
+	uint8_t four : 4;
+      };
+    };
   } prefix;
   uint8_t type;
   uint8_t opcode;
+  uint8_t rip;
+  union {
+    uint8_t modRM;
+    struct {
+      uint8_t RM : 3;
+      uint8_t reg : 3;
+      uint8_t mod : 2;
+    };
+  };
+  union {
+    uint8_t sib;
+    struct {
+      uint8_t base : 3;
+      uint8_t index : 3;
+      uint8_t scale : 2;
+    };
+  };
+  uint32_t disp;
+  uint64_t imm;
 } X86Inst;
 
 typedef struct _cpu {  
@@ -56,6 +84,8 @@ typedef struct _cpu {
   uint64_t decodeState;
   QueueU8* decodeBytes;
   X86Inst decodedInst;
+  uint8_t dispRead;
+  uint8_t immRead;
   
 } CPU;
 
